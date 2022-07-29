@@ -1,0 +1,344 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f5f5f5;
+  color: #444;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
+  /* height: 100vh; */
+  width: 100%;
+  background: #e96443;
+  /* background: -webkit-linear-gradient(to right, #904e95, #e96443);
+  background: linear-gradient(to right, #904e95, #e96443); */
+
+  overflow-x: auto;
+}
+
+h1 {
+  color: rgb(179, 131, 226);
+  font-size: 10rem;
+  text-align: center;
+  opacity: 0.5;
+  background: #f09819; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #edde5d,
+    #f09819
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #edde5d,
+    #f09819
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.container {
+  padding: 50px;
+}
+
+button {
+  align-self: center;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 30px;
+  background: rgb(255, 201, 193);
+  cursor: pointer;
+  color: rgb(16, 3, 3);
+  font-weight: 700;
+}
+
+.btnDelete {
+  background: rgb(170, 54, 54);
+  color: white;
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.form {
+  margin: 20px;
+  border: 1px solid rgba(31, 23, 23, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.form input {
+  margin: 0 auto;
+}
+.input {
+  border: none;
+  color: #444;
+  font-size: 2rem;
+  padding: 1rem 2rem;
+  display: block;
+  width: 100%;
+}
+.input::placeholder {
+  color: #d5d5d5;
+}
+.input:focus {
+  border-radius: 2rem;
+  outline-color: rgb(179, 131, 226);
+}
+.todos {
+  background-color: #fff;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+.todos li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: grab;
+  font-size: 1.5rem;
+  padding: 0.75rem 1.25rem.75rem 0.75rem;
+  background-color: var(--first-color-lighten);
+  box-shadow: 4px 4px 16px #cec4c4, -2px -2px 16px rgb(232 232 232);
+  border-radius: 3.5rem;
+  margin: 15px;
+}
+
+.todos li.dragging {
+  /* transform: rotate(20deg); */
+}
+
+.todos li:hover {
+  background-color: rgb(231, 227, 227);
+}
+
+.todos li p {
+  max-width: 60%;
+  overflow-wrap: break-word;
+}
+
+.todos li p.disable {
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
+.todos li div {
+  display: flex;
+  gap: 10px;
+}
+
+.modal {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  bottom: 0;
+  right: 0;
+  padding: 100px;
+  background: #ccc;
+  z-index: 100000;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: -1;
+  transition: all 0.5s;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.modal form {
+  background: white;
+  padding: 50px;
+  height: 100%;
+  z-index: 333333;
+}
+
+.modal form input {
+  border: 1px solid black;
+}
+
+.modal form button {
+  float: right;
+  margin: 20px;
+}
+
+.listTodo {
+  display: inline-flex;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.listTodo .listTodoPanel {
+  cursor: grab;
+  min-width: 350px;
+  position: relative;
+  /* flex-basis: 32.333333%; */
+  /* width: 100%; */
+  align-self: stretch;
+  height: 100%;
+  background-color: rgb(255, 255, 255);
+  /* margin: 0 auto; */
+  padding: 10px;
+  border-radius: 3rem;
+  overflow: hidden;
+}
+
+.listTodo .listTodoPanel .btnDeleteListTodo {
+  position: absolute;
+  right: 0;
+  margin: 10px 15px;
+}
+
+.listTodo .listTodoPanel .listTodoTitle {
+  text-align: center;
+  padding: 20px;
+  font-weight: 900;
+  font-size: 25px;
+  margin-top: 60px;
+}
+
+.listTodo .listTodoPanel ul {
+  position: relative;
+  min-height: 70%;
+  max-height: 80%;
+  margin-bottom: 100px;
+  padding: 30px 0;
+}
+
+.listTodo .listTodoPanel form {
+  bottom: 0;
+  position: absolute;
+}
+
+.todosDrag {
+  /* width: 100%;
+  height: 300px;
+  background-color: rgb(255, 255, 255);
+  margin: 0;
+  padding: 0; */
+}
+
+[data-state="dragging"] {
+  position: absolute;
+}
+
+.clone {
+  background: #eee;
+  border: 2px solid black;
+}
+
+.dragging {
+  /* border: 4px yellow solid; */
+  transform: translate(-2deg);
+  cursor: grabbing;
+}
+.droppable {
+  display: inline-block;
+  height: 160px;
+  width: 160px;
+  margin: 10px;
+  border: 3px salmon solid;
+  background-color: white;
+}
+
+.invisible {
+  display: none;
+}
+
+.draggable {
+  padding: 1rem;
+  background-color: white;
+  /* border: 1px solid black; */
+  cursor: move;
+}
+
+.draggable.dragging {
+  opacity: 0.5;
+}
+
+#formAddListTodo {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.addListTodo {
+  /* z-index: 9999; */
+  /* position: fixed;
+  top: 400px; */
+  width: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* .addListTodo button {
+  border-radius: 0;
+} */
+
+.formAddListTodo {
+  width: 100%;
+  padding: 20px;
+  background-color: white;
+  /* background-color: white;
+  background-blend-mode: darken; */
+  border-radius: 3rem;
+  position: relative;
+  margin-top: -250px;
+  transition: margin 0.5s ease-in-out;
+}
+
+.formAddListTodo input {
+  padding: 10px 15px;
+  border-radius: 15px;
+}
+
+.formAddListTodo button[type="submit"] {
+  width: 100%;
+}
+
+.mt-top-negative-200px {
+  position: absolute;
+  margin-top: -250px;
+}
+
+.mt-top-200px {
+  margin-top: 0px !important;
+}
+
+.toast {
+  position: fixed;
+  top: 20vh;
+  left: 0;
+  background-color: floralwhite;
+  margin-left: -300px;
+  transition: margin-left 1s ease-in-out;
+}
+
+.toast p {
+  padding: 20px;
+  color: black;
+  font-size: 20px;
+}
+
+.margin-left-negative-300 {
+  margin-left: 0;
+}
