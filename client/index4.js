@@ -510,8 +510,16 @@ class Sortable {
       const container = target.closest("ul");
 
       this.allowDrop(e);
-      const afterElement = this.getDragAfterElement(container, e.clientY);
-      const beforeElement = this.getDragBeforeElement(container, e.clientY);
+      const afterElement = this.getDragPositionElement(
+        "after",
+        container,
+        e.clientY
+      );
+      const beforeElement = this.getDragPositionElement(
+        "before",
+        container,
+        e.clientY
+      );
       const draggable = document.querySelector(".dragging");
       this.initialListTodoId = draggable.dataset.listId;
 
@@ -842,33 +850,13 @@ class Sortable {
           }
         }
       });
-
-      // this.listTodos.forEach(async (listTodo) => {
-      //   if (listTodo._id === id) {
-      //     const data = {
-      //       tasks: [...listTodo.tasks.map((task) => task._id)],
-      //     };
-
-      //     await this.onUpdateBoard(id, data);
-      //   }
-
-      //   if (listTodo._id === listTodoId) {
-      //     const data = {
-      //       tasks: [...listTodo.tasks.map((task) => task._id)],
-      //     };
-
-      //     await this.onUpdateBoard(listTodoId, data);
-      //   }
-      // });
       const reqData = this.listTodos.reduce((acc, ele) => {
         if (ele._id === id) {
-          console.log(acc);
           return [
             ...acc,
             { id: id, tasks: [...ele.tasks.map((task) => task._id)] },
           ];
         } else if (ele._id === listTodoId) {
-          console.log(acc);
           return [
             ...acc,
             { id: listTodoId, tasks: [...ele.tasks.map((task) => task._id)] },
@@ -876,7 +864,6 @@ class Sortable {
         } else return acc;
       }, []);
 
-      console.log(reqData);
       await this.onUpdateBoardMany(reqData);
     }
 
@@ -886,42 +873,36 @@ class Sortable {
     this.render();
   }
 
-  getDragAfterElement(container, y) {
+  getDragPositionElement(postion, container, y) {
     const draggableElements = [
       ...container.querySelectorAll(".draggable:not(.dragging)"),
     ];
+    if (postion === "before") {
+      return draggableElements.reduce(
+        (closest, ele) => {
+          const box = ele.getBoundingClientRect();
 
-    return draggableElements.reduce(
-      (closest, ele) => {
-        const box = ele.getBoundingClientRect();
+          const offset = y - box.top - box.height / 2;
+          return offset > 0 && offset < closest.offset
+            ? { offset: offset, element: ele }
+            : closest;
+        },
+        { offset: Number.POSITIVE_INFINITY }
+      ).element;
+    } else if (postion === "after") {
+      return draggableElements.reduce(
+        (closest, ele) => {
+          const box = ele.getBoundingClientRect();
 
-        const offset = y - box.top - box.height / 2;
-        return offset < 0 && offset > closest.offset
-          ? { offset: offset, element: ele }
-          : closest;
-      },
-      { offset: Number.NEGATIVE_INFINITY }
-    ).element;
+          const offset = y - box.top - box.height / 2;
+          return offset < 0 && offset > closest.offset
+            ? { offset: offset, element: ele }
+            : closest;
+        },
+        { offset: Number.NEGATIVE_INFINITY }
+      ).element;
+    }
   }
-
-  getDragBeforeElement(container, y) {
-    const draggableElements = [
-      ...container.querySelectorAll(".draggable:not(.dragging)"),
-    ];
-
-    return draggableElements.reduce(
-      (closest, ele) => {
-        const box = ele.getBoundingClientRect();
-
-        const offset = y - box.top - box.height / 2;
-        return offset > 0 && offset < closest.offset
-          ? { offset: offset, element: ele }
-          : closest;
-      },
-      { offset: Number.POSITIVE_INFINITY }
-    ).element;
-  }
-
   getDragHorizontalAfterElement(container, x) {
     const draggableElements = [
       ...container.querySelectorAll(".listTodoPanel:not(.dragging)"),
